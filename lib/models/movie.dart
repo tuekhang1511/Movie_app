@@ -1,13 +1,11 @@
-
-
 class Movie {
   final String title;
   final String overview;
-  final List genre;
+  final List genres;
 
   Movie({
     required this.title,
     required this.overview,
-    required this.genre,
+    required this.genres,
   });
 }

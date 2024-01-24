@@ -37,7 +37,7 @@ class MovieCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: movies[index]
-                    .genre
+                    .genres
                     .map(
                       (genre) => Text(
                         genre,
