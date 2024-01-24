@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:movie_info/models/movie.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_info/models/movie_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -57,46 +58,7 @@ class _HomePageState extends State<HomePage> {
                     itemCount: movies.length,
                     padding: EdgeInsets.all(20),
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 8.0),
-                        child: Container(
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(
-                                  12), // Adjust the radius as needed
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  movies[index].title,
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  movies[index].overview,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: movies[index]
-                                      .genre
-                                      .map(
-                                        (genre) => Text(
-                                          genre,
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              ],
-                            )),
-                      );
+                      return MovieCard(movies: movies,index: index,);
                     });
                 // return Text(movies.length.toString());
               } else {
