@@ -20,41 +20,47 @@ class _HomePageState extends State<HomePage> {
 
   List<Movie> filteredMovies = [];
 
-  List<String> genres = [];
-
   List<String> genresBar = [];
 
   List<List<Object>> genresWithFlags = [];
 
   List<String> test = [];
 
-  Future getMovies() async {
-    for (int i = 1; i < 10; i++) {
-      List<String> genres = [];
+  Future<void> fetchMovie(int id) async {
+    List<String> genres = [];
 
-      var response = await http.get(Uri.https("api.themoviedb.org",
-          "3/movie/$i", {"api_key": "6e68f6814629f7c082de4f90f23adeb1"}));
-      var jsonData = jsonDecode(response.body);
-      var jsonString = jsonEncode(jsonData);
+    var response = await http.get(Uri.https("api.themoviedb.org",
+        "3/movie/$id", {"api_key": "6e68f6814629f7c082de4f90f23adeb1"}));
+    var jsonData = jsonDecode(response.body);
+    var jsonString = jsonEncode(jsonData);
 
-      try {
-        for (var genre in jsonData['genres']) {
-          genres.add(genre['name']);
-        }
-        var movie = Movie(
-            title: jsonData['title'],
-            overview: jsonData['overview'],
-            genres: genres);
-
-        // if (movies.every((movie2) => movie2.title != movie.title)) {
-        movies.add(movie);
-        // }
-
-        test.add(jsonString);
-      } catch (e) {
-        // continue;
+    try {
+      for (var genre in jsonData['genres']) {
+        genres.add(genre['name']);
       }
+      var movie = Movie(
+          title: jsonData['title'],
+          overview: jsonData['overview'],
+          genres: genres);
+
+      // if (movies.every((movie2) => movie2.title != movie.title)) {
+      movies.add(movie);
+      // }
+
+      test.add(jsonString);
+    } catch (e) {
+      // continue;
     }
+  }
+
+  Future getMovies() async {
+    List<Future<void>> fetchMovieFutures = [];
+
+    for (int i = 1; i < 100; i++) {
+      fetchMovieFutures.add(fetchMovie(i));
+    }
+
+    await Future.wait(fetchMovieFutures);
 
     for (Movie movie in movies) {
       for (String genre in movie.genres) {
@@ -129,16 +135,19 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Container(
                         height: 50,
+                        alignment: Alignment.center,
                         child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: genresWithFlags.length,
                             itemBuilder: (context, index) {
-                              return Genre(
-                                genre: genresWithFlags[index][0].toString(),
-                                isSelected: genresWithFlags[index][1] as bool,
-                                onTap: () {
-                                  toggleGenreSelection(index);
-                                },
+                              return Center(
+                                child: Genre(
+                                  genre: genresWithFlags[index][0].toString(),
+                                  isSelected: genresWithFlags[index][1] as bool,
+                                  onTap: () {
+                                    toggleGenreSelection(index);
+                                  },
+                                ),
                               );
                             })),
                     SizedBox(
