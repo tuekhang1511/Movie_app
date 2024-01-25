@@ -7,7 +7,11 @@ class MovieCard extends StatelessWidget {
   final List<Movie> movies;
   final int index;
 
-  const MovieCard({Key? key, required this.movies, required this.index}) : super(key: key);
+  final String baseImageUrl =
+      "https://image.tmdb.org/t/p/w300"; // Replace with the actual base URL
+
+  const MovieCard({Key? key, required this.movies, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,12 @@ class MovieCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Image.network(
+                "$baseImageUrl${movies[index].posterPath.toString()}",
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Text(
                 movies[index].title,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

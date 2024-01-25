@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
       var movie = Movie(
           title: jsonData['title'],
           overview: jsonData['overview'],
+          posterPath: jsonData['poster_path'],
           genres: genres);
 
       // if (movies.every((movie2) => movie2.title != movie.title)) {
