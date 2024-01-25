@@ -29,3 +29,36 @@ class Genre extends StatelessWidget {
     );
   }
 }
+
+class GenreList extends StatelessWidget {
+  final List genresWithFlags;
+  final Function toggleGenreSelection;
+
+  GenreList({
+    required this.genresWithFlags,
+    required this.toggleGenreSelection,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      alignment: Alignment.center,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: genresWithFlags.length,
+        itemBuilder: (context, index) {
+          return Center(
+            child: Genre(
+              genre: genresWithFlags[index][0].toString(),
+              isSelected: genresWithFlags[index][1] as bool,
+              onTap: () {
+                toggleGenreSelection(index);
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

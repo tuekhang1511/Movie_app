@@ -16,6 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static const String apiBaseUrl = "api.themoviedb.org";
+  static const String apiKey = "6e68f6814629f7c082de4f90f23adeb1";
+
   List<Movie> movies = [];
 
   List<Movie> filteredMovies = [];
@@ -29,8 +32,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> fetchMovie(int id) async {
     List<String> genres = [];
 
-    var response = await http.get(Uri.https("api.themoviedb.org",
-        "3/movie/$id", {"api_key": "6e68f6814629f7c082de4f90f23adeb1"}));
+    var response = await http.get(Uri.https(apiBaseUrl,
+        "3/movie/$id", {"api_key": apiKey}));
     var jsonData = jsonDecode(response.body);
     var jsonString = jsonEncode(jsonData);
 
@@ -136,20 +139,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                         height: 50,
                         alignment: Alignment.center,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: genresWithFlags.length,
-                            itemBuilder: (context, index) {
-                              return Center(
-                                child: Genre(
-                                  genre: genresWithFlags[index][0].toString(),
-                                  isSelected: genresWithFlags[index][1] as bool,
-                                  onTap: () {
-                                    toggleGenreSelection(index);
-                                  },
-                                ),
-                              );
-                            })),
+                        child: GenreList(genresWithFlags: genresWithFlags, toggleGenreSelection: toggleGenreSelection,),),
                     SizedBox(
                       height: 20,
                     ),
